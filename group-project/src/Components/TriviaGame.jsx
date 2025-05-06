@@ -12,9 +12,9 @@ function TriviaGame() {
   const [gameOver, setGameOver] = useState(false);
 
   useEffect(() => {
-    fetch("https://opentdb.com/api.php?amount=50&category=9&type=multiple") // Only fetches 10 questions
+    fetch("https://opentdb.com/api.php?amount=10&category=9&type=multiple") // Fetches 10 questions
       .then(response => response.json())
-      .then(data => setQuestions(data.results)) // Ensures correct API structure
+      .then(data => setQuestions(data.results)) // Extracts the `results` array
       .catch(error => console.error("Error fetching data:", error));
   }, []);
 
@@ -27,7 +27,7 @@ function TriviaGame() {
     if (answer === question.correct_answer) {
       setScore(score + 1);
     }
-    if (index + 1 < 10) { // Limits to 10 questions
+    if (index + 1 < 10) { // Game ends after 10 questions
       setIndex(index + 1);
     } else {
       setGameOver(true);
