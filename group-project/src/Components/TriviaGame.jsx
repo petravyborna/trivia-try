@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 
 const decodeText = (text) => {
   const parser = new DOMParser();
@@ -10,11 +10,17 @@ function TriviaGame() {
   const [index, setIndex] = useState(0);
   const [score, setScore] = useState(0);
   const [gameOver, setGameOver] = useState(false);
+  const fetchRef = useRef(false);
 
   useEffect(() => {
-    fetch("https://opentdb.com/api.php?amount=10&category=9&type=multiple") // Fetches 10 questions
+    const hasFetched = fetchRef.current;
+    if (hasFetched) return;
+  
+    fetchRef.current = true; // Prevent future calls
+  
+    fetch("https://opentdb.com/api.php?amount=10&category=9&type=multiple")
       .then(response => response.json())
-      .then(data => setQuestions(data.results)) // Extracts the `results` array
+      .then(data => setQuestions(data.results))
       .catch(error => console.error("Error fetching data:", error));
   }, []);
 
